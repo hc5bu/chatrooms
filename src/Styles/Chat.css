@@ -1,0 +1,17 @@
+#main {
+    width: 100%;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.myMessage{
+    background-color: aquamarine;
+    align-self: flex-end;
+}
+
+.notMyMessage{
+    background-color: aqua;
+    align-self: flex-start;
+}
