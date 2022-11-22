@@ -1,21 +1,21 @@
-#main {
-    display: flex;
-    flex-direction: column;
-    height: 100%
-}
+
 
 #header{
     height:50px;
     width:100%;
+    position: fixed;
+    left: 0;
+    top: 0;
     background-color: lightpink;
-}
-
-#main{
-    flex: 1 0 auto;
+    text-align:center;
 }
 
 #footer{
     height:50px;
     width:100%;
+    position: fixed;
+    left: 0;
+    bottom: 0;
     background-color: lightblue;
+    text-align:center;
 }

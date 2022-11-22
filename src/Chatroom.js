@@ -17,19 +17,17 @@ export default function ChatroomWrapper(props){
 class Chatroom extends React.Component{
     constructor(props) {
         super(props);
+        let valid = this.checkValid(props.id);
         this.state={
             error:undefined,
             loaded:false,
-            invalid:false,
+            invalid:!valid,
             username:"Someone else?"
         };
     }
     
     componentDidMount(){
-        if(!this.checkValid()){
-            this.setState({invalid:true})
-        }
-        else {
+        if(!this.state.invalid) {
             onValue(ref(db,this.props.id+"/"), (snapshot)=>{
                 let newState = {loaded:true, ...snapshot.val()}
                 this.setState(newState);
@@ -44,10 +42,11 @@ class Chatroom extends React.Component{
 
     }
     
-    checkValid() {
-        const isInvalid = this.props.id.length>4 || this.props.id.match(/[^A-Za-z0-9]/g);
+    checkValid(id) {
+        const isInvalid = id.length>4 || id.match(/[^A-Za-z0-9]/g);
         return !isInvalid;
     }
+    
     render() {
         if(this.state.invalid){
             return(
@@ -74,11 +73,11 @@ class Chatroom extends React.Component{
         else {
             return (
                 <div id="body">
-                    <div id="header">Hi!</div>
+                    <div id="header">This is the header.</div>
                     <div id="messages">
                         <Chat username={this.state.username} messages={this.state.messages}/>
                     </div>
-                    <div id="footer">Hello</div>
+                    <div id="footer">This is the footer.</div>
                 </div>
             )
         }
