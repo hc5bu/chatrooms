@@ -1,6 +1,6 @@
-#main {
+#chat {
     width: 100%;
-    min-height: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
@@ -9,9 +9,13 @@
 .myMessage{
     background-color: aquamarine;
     align-self: flex-end;
+    margin:5px;
+    padding:3px;
 }
 
 .notMyMessage{
     background-color: aqua;
     align-self: flex-start;
+    margin:5px;
+    padding:3px
 }

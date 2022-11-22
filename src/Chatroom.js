@@ -46,7 +46,7 @@ class Chatroom extends React.Component{
         const isInvalid = id.length>4 || id.match(/[^A-Za-z0-9]/g);
         return !isInvalid;
     }
-    
+
     render() {
         if(this.state.invalid){
             return(
@@ -72,7 +72,7 @@ class Chatroom extends React.Component{
         }
         else {
             return (
-                <div id="body">
+                <div>
                     <div id="header">This is the header.</div>
                     <div id="messages">
                         <Chat username={this.state.username} messages={this.state.messages}/>

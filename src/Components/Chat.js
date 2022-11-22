@@ -5,7 +5,7 @@ function Chat(props){
     //This component does not deal with states.
     //It simply renders the chat based on the data it's provided
     return(
-        <div id="main">
+        <div id="chat">
             { // props.messages should be passed in an array, has username, text, timestamp field
                 props.messages.map((message,i)=>(
                     <div className={message.username===props.username ? "myMessage" : "notMyMessage"}>
