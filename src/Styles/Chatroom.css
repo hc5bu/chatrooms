@@ -1,31 +1,32 @@
 #header{
     height:50px;
     width:100%;
-    position: fixed;
+    position: absolute;
     left: 0;
     top: 0;
-    background-color: lightpink;
+    background-color: lightyellow;
     text-align:center;
+    border-bottom: solid 1px black;
 }
 
 #messages{
     width:100%;
-    position:fixed;
+    position:absolute;
     left:0;
     right:0;
     top:50px;
     bottom:50px;
-    overflow-y:auto;
-    margin-top:5px;
-    margin-bottom:5px;
 }
 
 #footer{
     height:50px;
     width:100%;
-    position: fixed;
+    position: absolute;
     left: 0;
     bottom: 0;
-    background-color: lightblue;
-    text-align:center;
+    background-color: lightcyan;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    border-top: 1px solid black
 }

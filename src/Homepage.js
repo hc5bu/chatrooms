@@ -133,13 +133,13 @@ function Homepage() {
     else {
       const numUsers = data['users'] !== undefined ? Object.keys(data['users']).length : 0;
       const numMessages = data['messages'] !== undefined ? Object.keys(data['messages']).length : 0;
-      const lastUpdated = data['lastUpdated']; // should be a formatted string
+      const lastUpdated = new Date(data['lastUpdated']);
       return (
         <div>
           <p>ID: {id}</p>
           <p>
             Active Users: {numUsers} Messages: {numMessages}<br />
-            {(lastUpdated !== undefined) && {"Last Updated": {lastUpdated}}}
+            {(lastUpdated !== undefined) && "Last Updated:" + lastUpdated.toString()}
           </p>
           <Link to={"/" + id}><button>Go to Chatroom</button></Link>
         </div>
