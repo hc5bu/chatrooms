@@ -50,7 +50,6 @@ function Homepage() {
       setChecking(true);
       setShow(false);
       refresh(s).then(data => {
-        console.log(data);
         setData(data);
         if (data !== undefined) {
           setChecking(false);
