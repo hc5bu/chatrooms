@@ -1,27 +1,28 @@
 #header{
     height:50px;
     width:100%;
-    position: absolute;
+    position: fixed;
     left: 0;
     top: 0;
     background-color: lightyellow;
     text-align:center;
-    border-bottom: solid 1px black;
+    border-bottom: 1px solid black;
 }
 
 #messages{
     width:100%;
-    position:absolute;
+    position:fixed;
     left:0;
     right:0;
-    top:50px;
+    top:51px;
     bottom:50px;
+    overflow: auto;
 }
 
 #footer{
     height:50px;
     width:100%;
-    position: absolute;
+    position: fixed;
     left: 0;
     bottom: 0;
     background-color: lightcyan;

@@ -77,14 +77,6 @@ class Chatroom extends React.Component {
         return event.returnValue = 'Are you sure you want to quit?'; //not sure what this does
     }
 
-    // no need to call componentDidUpdate
-    componentDidUpdate(){
-        /*
-        console.log(this.userKey);
-        console.log(this.userListener);
-        console.log(this.messageListener);*/
-    }
-
     componentWillUnmount() {
         //remove event listener
         window.removeEventListener('beforeunload', this.unloading);
@@ -162,7 +154,9 @@ class Chatroom extends React.Component {
         else {
             return (
                 <div>
-                    <div id="header">To be added</div>
+                    <div id="header">
+                        <Header users={this.state.users} roomId={this.props.id} />
+                    </div>
                     <div id="messages">
                         <Chat username={this.state.username} messages={this.state.messages} error={this.state.error} />
                     </div>

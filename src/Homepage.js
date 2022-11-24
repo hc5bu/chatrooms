@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { db } from './firebase.js';
 import { ref, get } from "firebase/database";
 import { Link } from "react-router-dom"
@@ -13,10 +13,6 @@ function Homepage() {
   const [id, setId] = useState(); //store id to go to room
   const [checking, setChecking] = useState(false); // disable check button when checking database
   //const [creating, setCreating] = useState(false);
-
-  useEffect(() => {
-    //refresh("123").then(a=>console.log(a));
-  }, []);
 
   const refresh = async function (id) {
     setError(null);
@@ -59,63 +55,7 @@ function Homepage() {
         } // otherwise, error should pop up
       });
     }
-
-
   }
-  /*
-  const checkId = () => {
-    if (search !== "") {
-      if(!checkValid())
-        return;
-      const s = search;
-      setId(search);
-      //setSearch("");
-      setChecking(true);
-      refresh().then(data => {
-        if (data===null) {
-          setId(undefined);
-          setCheck(undefined);
-        } else {
-          if (data[s] !== undefined)
-            setCheck(true);
-          else
-            setCheck(false);
-          setChecking(false);
-        }
-        setData(data);
-      });
-    }
-    else {
-      setId(undefined);
-      setCheck(undefined);
-      setInvalid(false);
-    }
-  }
-  */
-  /*
-  const createRoom = async () => {
-    //uses the id field
-    setCreating(true);
-    const data = await refresh();
-    if(data!==null){
-      if(data[id]===undefined){
-        try{
-          await set(ref(db, "rooms/"+id), {
-            "viewing" : 0,
-            "lastLogout" : null,
-            "users" : [],
-            "messages" : []
-          });
-          await set(ref(db, "active/"+id), 0);
-          navigate("/"+id);
-        } catch(error) {
-          setError(error.message);
-        }
-      } else {
-        navigate("/"+id);
-      }
-    }
-  }*/
 
   const renderCheck = () => {
     if (error !== null)
@@ -125,7 +65,7 @@ function Homepage() {
       return (
         <div>
           <p>ID: {id}</p>
-          <p>That room ID is not currently in use. Be the first to send a message!</p>
+          <p>That room ID is currently not in use. Feel free to start chatting!</p>
           <Link to={"/" + id}><button>Go to Chatroom</button></Link>
         </div>
       )
