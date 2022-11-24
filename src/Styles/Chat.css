@@ -27,17 +27,53 @@
 
 
 .myMessage {
-    background-color: aquamarine;
     align-self: flex-end;
     margin:5px;
-    padding:5px;
+    max-width: 75vw;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
 }
 
 .notMyMessage {
-    background-color: aqua;
     align-self: flex-start;
     margin:5px;
-    padding:5px
+    max-width: 75vw;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.myMessage > .messageText {
+    background-color: aquamarine;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 3px;
+    margin-bottom: 3px;
+}
+
+.notMyMessage > .messageText {
+    background-color: aqua;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 3px;
+    margin-bottom: 3px;
+}
+
+.username {
+    font-size: 14px;
+    font-weight:bold;
+    margin:5px;
+    margin-top:0;
+    margin-bottom:0;
+}
+
+.timestamp {
+    color: slategray;
+    font-size: 10px;
+    margin:5px;
+    margin-top:0;
+    margin-bottom:0;
 }
 
 .chatError{

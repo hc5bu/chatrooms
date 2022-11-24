@@ -9,7 +9,9 @@ function Header(props){
     return (
         <div id="headerContent">
             <Link to="/"><button id="backButton">Back to<br/>Home</button></Link>
-            <div id="activeUsers">{num} Active User{num!==1 && "s"}{num>0 && ":"} {s}</div>
+            <div id="activeUsers">
+                <strong>{num} Active User{num!==1 && "s"}{num>0 && ": "}</strong>{s}
+            </div>
             <div id="roomIdText">Room ID: <div id="roomNum">{props.roomId}</div></div>
         </div>
     )
