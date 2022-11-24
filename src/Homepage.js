@@ -117,7 +117,10 @@ function Homepage() {
           <p>Reason: {error}</p>
         </div>
         : null}
-
+    <div id="disclaimer">
+      Please limit usage to 100 users at a time.<br/>
+      Chatrooms that have been inactive for more than an hour will be cleared on the hour.
+    </div>
     </div>
 
   );

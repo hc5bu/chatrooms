@@ -17,7 +17,7 @@ const handler = async function (event, context) {
         const numUsers = data[id]['users'] !== undefined ? Object.keys(data[id]['users']).length : 0;
         const lastUpdated = data[id]['lastUpdated'];
         const now = Date.now()
-        if (lastUpdated !== undefined && now - lastUpdated > 1200000 && numUsers === 0)
+        if (lastUpdated !== undefined && now - lastUpdated > 3600000 && numUsers === 0)
             deleteList.push(id);
     }
 

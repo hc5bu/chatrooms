@@ -63,7 +63,7 @@ function Chat(props) {
                             {message.text}
                         </div>
                         <div className="timestamp">
-                            {dates[i]+" "+times[i]}
+                            {dates[i]}&nbsp;{times[i]}
                         </div>
                     </div>
                 ))

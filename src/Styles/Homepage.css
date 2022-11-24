@@ -1,32 +1,38 @@
-#pageTitle{
-    color:blue;
+#pageTitle {
+    color: blue;
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-    font-size:75px;
-    margin-bottom:30px;
+    font-size: 75px;
+    margin-bottom: 30px;
 }
 
 .roomInfo {
-    margin-top:15px;
+    margin-top: 15px;
 }
 
-.roomInfo > p {
-    padding:0;
-    margin:5px;
-    margin-top:0px;
+.roomInfo>p {
+    padding: 0;
+    margin: 5px;
+    margin-top: 0px;
 }
 
-#searchbar{
-    height:20px;
-    font-size:16px;
-    width:65px;
-    margin-right:3px;
+#searchbar {
+    height: 20px;
+    font-size: 16px;
+    width: 65px;
+    margin-right: 3px;
 }
 
-#checkButton{
-    font-size:17px;
+#checkButton {
+    font-size: 17px;
 }
 
-.goButton{
-    font-size:20px;
-    margin:15px;
+.goButton {
+    font-size: 20px;
+    margin: 15px;
+}
+
+#disclaimer {
+    font-size: 10px;
+    text-align: center;
+    margin-top: 15px;
 }
