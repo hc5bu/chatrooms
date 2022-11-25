@@ -8,6 +8,12 @@
     align-items: center;
 }
 
+.startingText {
+    max-height:100%;
+    text-align: center;
+    margin-right: 5px;
+}
+
 #messageInput, #usernameInput{
     height:90%;
     flex-grow:1;

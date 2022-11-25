@@ -49,8 +49,8 @@ function Footer(props){
     if(props.username===""){
         return(
             <div id="footerContent">
-                {!nameExists ? <div style={{"textAlign":"center","marginRight":"5px"}}>Enter a username<br/>to start chatting:</div> : 
-                <div style={{"textAlign":"center", "marginRight":"5px"}}>That username is currently in use.<br/> Enter something else:</div>}
+                {!nameExists ? <div className="startingText">Enter a username<br/>to start chatting:</div> : 
+                <div className="startingText">That username is currently in use.<br/> Enter something else:</div>}
                 <input id="usernameInput" value={userEntry} onChange={e=>setUserEntry(e.target.value)} placeholder="Enter a username..." 
                 onKeyDown={enterPressUser} disabled={sending}/>
                 <button id="enterButton" onClick={clickUserEntry} disabled={sending}>
