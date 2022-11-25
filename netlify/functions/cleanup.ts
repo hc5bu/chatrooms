@@ -1,4 +1,5 @@
 const { schedule } = require('@netlify/functions');
+const fetch = require('node-fetch');
 
 const handler = async function (event, context) {
     console.log("Received event:", event);
