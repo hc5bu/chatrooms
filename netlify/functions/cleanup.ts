@@ -1,18 +1,18 @@
 const { schedule } = require('@netlify/functions');
-const fetch = require('node-fetch');
+const axios = require('axios');
 
 const handler = async function (event, context) {
     console.log("Received event:", event);
-    const resp = await fetch("https://chatroom-2bf9b-default-rtdb.firebaseio.com/.json", {
-        method: "GET",
-    });
-    const data = await resp.json();
-    if (!resp.ok) {
-        console.error("Error:", data);
+    let res;
+    try{
+        res = await axios.get("https://chatroom-2bf9b-default-rtdb.firebaseio.com/.json");
+    } catch(error){
+        console.error("Error:", error.response.data);
         return {
-            statusCode: resp.status,
+            statusCode: error.response.status,
         }
     }
+    const data = res.data;
     const deleteList = [];
     for (const id in data) {
         const numUsers = data[id]['users'] !== undefined ? Object.keys(data[id]['users']).length : 0;
@@ -35,26 +35,16 @@ const handler = async function (event, context) {
             update[id]['lastUpdated'] = null;
             update[id]['messages'] = null;
         }
-        let response: Response;
+        let response;
         try {
-            response = await fetch('https://chatroom-2bf9b-default-rtdb.firebaseio.com/.json', {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(update),
-            });
+            response = await axios.patch('https://chatroom-2bf9b-default-rtdb.firebaseio.com/.json',update);
         } catch (error) {
-            console.error('Error: ', error);
+            console.error('Error: ', error.response.data);
             return {
-                statusCode: 400,
+                statusCode: error.response.status,
             };
         }
-        const rj = await response.json();
-        if (!response.ok)
-            console.error("Error:", rj);
-        else
-            console.log('Successfully updated:', rj);
+        console.log('Successfully updated:', response.data);
         return {
             statusCode: response.status,
         };
