@@ -5,13 +5,13 @@ const handler = async function (event, context) {
     const resp = await fetch("https://chatroom-2bf9b-default-rtdb.firebaseio.com/.json", {
         method: "GET",
     });
+    const data = await resp.json();
     if (!resp.ok) {
-        console.error("Error:", resp.json());
+        console.error("Error:", data);
         return {
             statusCode: resp.status,
         }
     }
-    const data = resp.json();
     const deleteList = [];
     for (const id in data) {
         const numUsers = data[id]['users'] !== undefined ? Object.keys(data[id]['users']).length : 0;
