@@ -22,13 +22,36 @@
     margin-right: 3px;
 }
 
-#checkButton {
+#checkButton, #randomButton {
     font-size: 17px;
+    margin-left: 3px;
 }
+
+#checkButton {
+    color: darkblue;
+}
+
 
 .goButton {
     font-size: 20px;
     margin: 15px;
+    color: darkblue;
+    font-weight:bold
+}
+
+#tableButton{
+    margin-top : 10px;
+    margin-bottom : 3px;
+}
+
+table, tr, th, td {
+    border: 1px solid; 
+}
+
+table {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 5px;
 }
 
 #disclaimer {
