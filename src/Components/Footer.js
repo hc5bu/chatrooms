@@ -21,7 +21,8 @@ function Footer(props) {
         }
     }
 
-    const clickMessageEntry = async () => {
+    const clickMessageEntry = async (e) => {
+        e.preventDefault();
         if (messageEntry !== "") {
             setSending(true);
             const result = await props.sendMessage(messageEntry);
@@ -57,8 +58,7 @@ function Footer(props) {
                             <div style={{ 'fontSize': 12.5 }}>(Your username will be cleared when you leave this page.)</div>
                         </BrowserView>
                         <MobileView>
-                            <div style={{ 'fontSize': 12.5, "color": "red" }}>(Warning: your username will be cleared when you
-                                <strong>tab off</strong> of this page.)</div>
+                            <div style={{ 'fontSize': 12.5, "color": "red" }}>(Your username may be cleared if you leave this screen.)</div>
                         </MobileView>
                     </div>
                 </div>
