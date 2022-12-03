@@ -8,7 +8,8 @@ function Footer(props) {
     const [sending, setSending] = useState(false);
     const [nameExists, setNameExists] = useState();
 
-    const clickUserEntry = async () => {
+    const clickUserEntry = async (e) => {
+        e.preventDefault()
         const name = userEntry;
         if (name !== "") {
             setSending(true);
