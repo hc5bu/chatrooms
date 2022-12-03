@@ -4,7 +4,7 @@ const admin = require("firebase-admin");
 const handler = async function (event, context) {
     console.log("Received event:", event);
     
-    // First, set up firebase-admin
+    // First, set up firebase-admin (this code is private)
     const serviceAccount = {
         "type": "service_account",
         "project_id": "chatroom-2bf9b",
@@ -54,6 +54,7 @@ const handler = async function (event, context) {
         }
 
         await ref.update(update);
+        console.log("Deleted.")
         return {
             statusCode: 200,
         };

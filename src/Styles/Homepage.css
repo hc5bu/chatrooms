@@ -39,6 +39,10 @@
     font-weight:bold
 }
 
+#noActive{
+    margin-top: 5px;
+}
+
 #tableButton{
     margin-top : 10px;
     margin-bottom : 3px;

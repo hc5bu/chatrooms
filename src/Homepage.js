@@ -14,7 +14,7 @@ function Homepage() {
   const [checking, setChecking] = useState(false); // disable check button when checking database
   const [showTable, setShowTable] = useState(false); // show table
   const [tableing, setTableing] = useState(false); // disable table button
-  const [allData, setAllData] = useState(undefined);
+  const [allData, setAllData] = useState(undefined); //store data for table
 
   const refresh = async function (id) {
     setError(null);
@@ -108,7 +108,7 @@ function Homepage() {
     let result = '';
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     const charactersLength = characters.length;
-    for (var i = 0; i < 4; i++) {
+    for (let i = 0; i < 4; i++) {
       result += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
     setSearch(result);
@@ -116,11 +116,9 @@ function Homepage() {
 
   const renderTable = () => {
     if (allData === undefined) return null;
-    //console.log(allData);
     if (allData === null)
-      return "There aren't any currently active chatrooms.";
+      return (<div id="noActive">There currently aren't any active chatrooms.</div>);
     const ids = Object.keys(allData); //maybe sort?
-    //console.log(ids);
     return (
       <table>
         <thead>
@@ -173,7 +171,7 @@ function Homepage() {
       {invalid && <p>Please only use alphanumeric characters for the ID.</p>}
       {show && renderCheck()}
       <div id="tableContent">
-        <button id="tableButton" onClick={clickTable} disabled={tableing}>{showTable ? "Refresh Table" : "Display active chatrooms"}</button>
+        <button id="tableButton" onClick={clickTable} disabled={tableing}>{showTable ? "Refresh" : "Display active chatrooms"}</button>
         {showTable && renderTable()}
       </div>
       {error !== null ?

@@ -1,8 +1,8 @@
-import React from "react"
-import { useParams } from "react-router-dom";
+import React from "react";
+import { useParams, Link } from "react-router-dom";
 import { db } from "./firebase.js";
-import { ref, push, set, remove, onValue } from "firebase/database";
-import { Link } from "react-router-dom";
+import { ref, push, get, set, remove, onValue } from "firebase/database";
+import { isMobile } from "react-device-detect";
 import Chat from "./Components/Chat";
 import Footer from "./Components/Footer";
 import Header from "./Components/Header";
@@ -11,7 +11,7 @@ import "./Styles/Chatroom.css";
 export default function ChatroomWrapper(props) {
     let { id } = useParams();
     return (<Chatroom id={id} />);
-    // I don't know how to get params from the url any other way
+    // Wraps Chatroom in a function to use useParams()
 }
 
 class Chatroom extends React.Component {
@@ -27,67 +27,98 @@ class Chatroom extends React.Component {
             username: "",
             users: [],
             messages: [],
-            sending: false
+            //sending: false
         };
         this.userListener = undefined;
         this.messageListener = undefined;
+        this.userRef = undefined;
         this.userKey = undefined;
     }
 
     componentDidMount() {
         if (!this.state.invalid) {
-            const userRef = ref(db, `${this.props.id}/users`);
-            this.userKey = push(userRef);
-            set(this.userKey, "").then(()=>
-                this.setState({usersUpdated:true})
-            ).catch(error => this.setState({ error: error.message }));
-
-            //Get list of users, get list of messages
-            this.userListener = onValue(userRef, snapshot => {
-                if (snapshot.exists())
-                    this.setState({ usersLoaded: true, users: Object.values(snapshot.val()) });
-                else
-                    this.setState({ usersLoaded: true, users: [] }); //should never happen since there should be 1
-            }, error => this.setState({ error: error.message })) //if something went wrong
-
-            //inefficient, but works:
-            this.messageListener = onValue(ref(db, `${this.props.id}/messages`), snapshot => {
-                if (snapshot.exists())
-                    this.setState({ messagesLoaded: true, messages: Object.values(snapshot.val()) });
-                else
-                    this.setState({ messagesLoaded: true, messages: [] });
-            }, error => this.setState({ error: error.message }))
-
+            this.userRef = ref(db, `${this.props.id}/users`);
+            this.userKey = push(this.userRef);
+            this.loading();
             //and an event listener to do stuff when you leave the page.
-            window.addEventListener('beforeunload', this.unloading);
+            if(isMobile)
+                document.addEventListener("visibilitychange", this.visibilityChange);
+            else
+                window.addEventListener('beforeunload', this.unloading);
         }
-        
+
+    }
+
+    resetUsername = async () => {
+        // like setUsername below, but without parameters
+        let userlist = (await get(this.userRef)).val();
+        userlist = userlist!==null ? Object.values(userlist) : [];
+        this.setState({ users: userlist });
+        if (this.state.username === "" || userlist.includes(this.state.username)){
+            await set(this.userKey, ""); // will be "" if name is taken
+            this.setState({username : ""});
+        }
+        else
+            await set(this.userKey, this.state.username);
+    }
+
+    loading = () => {
+        this.resetUsername().then(() =>
+            this.setState({ usersUpdated: true })
+        ).catch(error => this.setState({ error: error.message }));
+
+        //Get list of users, get list of messages
+        this.userListener = onValue(this.userRef, snapshot => {
+            if (snapshot.exists())
+                this.setState({ usersLoaded: true, users: Object.values(snapshot.val()) });
+            else
+                this.setState({ usersLoaded: true, users: [] }); //should never happen since there should be 1
+        }, error => this.setState({ error: error.message })) //if something went wrong
+
+        this.messageListener = onValue(ref(db, `${this.props.id}/messages`), snapshot => {
+            if (snapshot.exists())
+                this.setState({ messagesLoaded: true, messages: Object.values(snapshot.val()) });
+            else
+                this.setState({ messagesLoaded: true, messages: [] });
+        }, error => this.setState({ error: error.message }))
     }
 
     unloading = (event) => {
-        // Cancel the event as stated by the standard.
-        event.preventDefault();
-        if(this.userKey!==undefined)
-            remove(this.userKey);
-        if (this.messageListener !== undefined)
-            this.messageListener();
-        if (this.userListener !== undefined)
-            this.userListener();
-        // Chrome requires returnValue to be set.
-        return event.returnValue = 'Are you sure you want to quit?'; //not sure what this does
-    }
-
-    componentWillUnmount() {
-        //remove event listener
-        window.removeEventListener('beforeunload', this.unloading);
-        //remove user from component
-        if(this.userKey!==undefined)
+        // event.preventDefault();
+        // remove user from component
+        if (this.userKey !== undefined)
             remove(this.userKey);
         //detach listeners
         if (this.messageListener !== undefined)
             this.messageListener();
         if (this.userListener !== undefined)
             this.userListener();
+        // With an undefined return value, it won't prompt you if you try to exit.
+    }
+
+    visibilityChange = (event) => {
+        if (document.visibilityState === 'visible') {
+            this.loading();
+        } else {
+            this.unloading();
+            /*
+            this.setState({
+                usersUpdated: false,
+                messagesLoaded: false,
+                usersLoaded: false
+            })
+            I can't unload the page. That'll reset the state of all components.
+            Chances are no one will type that quickly*/
+        }
+    }
+
+    componentWillUnmount() {
+        //remove event listeners
+        if (isMobile)
+            document.removeEventListener('visibilitychange', this.visibilityChange);
+        else
+            window.removeEventListener('beforeunload', this.unloading);
+        this.unloading();
     }
 
     checkValid(id) {
@@ -97,32 +128,32 @@ class Chatroom extends React.Component {
 
     //these will be passed to the footer
     setUsername = async (name) => {
-        if(this.state.users.includes(name))
+        if (this.state.users.includes(name))
             return null;
-        try{
+        try {
             await set(this.userKey, name);
         }
-        catch(error){
-            this.setState({error:error.message});
+        catch (error) {
+            this.setState({ error: error.message });
             return false;
         }
-        this.setState({username:name});
+        this.setState({ username: name });
         return true;
     }
 
     sendMessage = async (text) => {
-        const messageKey = push(ref(db,`${this.props.id}/messages`));
+        const messageKey = push(ref(db, `${this.props.id}/messages`));
         const newMessage = {
             text: text,
             timestamp: Date.now(),
             username: this.state.username,
         }
-        try{
+        try {
             await set(messageKey, newMessage);
             await set(ref(db, `${this.props.id}/lastUpdated`), Date.now())
         }
-        catch(error){
-            this.setState({error:error.message});
+        catch (error) {
+            this.setState({ error: error.message });
             return false;
         }
         return true;
@@ -157,10 +188,10 @@ class Chatroom extends React.Component {
                     <div id="header">
                         <Header users={this.state.users} roomId={this.props.id} />
                     </div>
-                    <div id="messages">
+                    <div id="messages" style={{ "bottom": (this.state.username === "" ? 90 : 50) }}>
                         <Chat username={this.state.username} messages={this.state.messages} error={this.state.error} />
                     </div>
-                    <div id="footer">
+                    <div id="footer" style={{ "height": (this.state.username === "" ? 90 : 50) }}>
                         <Footer username={this.state.username} setUsername={this.setUsername} sendMessage={this.sendMessage} />
                     </div>
                 </div>
