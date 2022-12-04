@@ -1,5 +1,6 @@
 const { schedule } = require('@netlify/functions');
 const admin = require("firebase-admin");
+const { getStorage } = require("firebase-admin/storage");
 
 const handler = async function (event, context) {
     console.log("Received event:", event);
@@ -20,11 +21,13 @@ const handler = async function (event, context) {
     
     admin.initializeApp({
       credential: admin.credential.cert(serviceAccount),
-      databaseURL: "https://chatroom-2bf9b-default-rtdb.firebaseio.com"
+      databaseURL: "https://chatroom-2bf9b-default-rtdb.firebaseio.com",
+      storageBucket: "chatroom-2bf9b.appspot.com/"
     });
     
     const db = admin.database();
     const ref = db.ref("/");
+    const bucket = getStorage().bucket();
 
     const snapshot = await ref.once('value');
     const data = snapshot.val();
@@ -47,12 +50,19 @@ const handler = async function (event, context) {
     } else {
         console.log("To delete: ", deleteList);
         const update = {};
+        const promiseList = [];
         for (const id of deleteList) {
             update[id] = {};
             update[id]['lastUpdated'] = null;
             update[id]['messages'] = null;
-        }
 
+            if(data[id]['files'] !== undefined){
+                for(const filepath of Object.values(data[id]['files']))
+                    promiseList.push(bucket.file(filepath).delete());                  
+                update[id]['files'] = null;
+            }
+        }
+        await Promise.all(promiseList); 
         await ref.update(update);
         console.log("Deleted.")
         return {
