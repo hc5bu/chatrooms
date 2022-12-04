@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { BrowserView, MobileView } from "react-device-detect";
+import { BrowserView, MobileView, isMobile } from "react-device-detect";
 import "../Styles/Footer.css"
 
 function Footer(props) {
@@ -101,7 +101,8 @@ function Footer(props) {
                     <input id="messageInput" value={messageEntry} onChange={e => setMessageEntry(e.target.value)} placeholder={`Type your message, ${props.username}...`}
                         onKeyDown={enterPressMessage} /> :
                     <div id="uploadContent">
-                        <input id='fileUpload' type='file' accept="text/plain,audio/*,image/*"  onChange={handleFileChange} value={fileValue} disabled={sending}/>
+                        <input id='fileUpload' type='file' accept="text/plain,audio/*,image/*"  onChange={handleFileChange} 
+                        style={{fontSize:(isMobile ? "" : "16px")}} value={fileValue} disabled={sending}/>
                         <BrowserView>
                             <span id="fileTypes">Valid: .jpeg/.png/.mp3/.txt</span>
                         </BrowserView>

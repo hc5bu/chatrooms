@@ -193,7 +193,7 @@ class Chatroom extends React.Component {
                 <div>
                     <h2>That ID is invalid.</h2>
                     <p>Room IDs should be up to 4 characters long and only contain alphanumeric characters.</p>
-                    <p><Link to={'/'}> Go back to the home page</Link></p>
+                    <p><Link to={'/'}>Go back to the home page</Link></p>
                 </div>
             )
         }

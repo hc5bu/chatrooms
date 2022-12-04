@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import Homepage from './Homepage';
 import Chatroom from './Chatroom';
+import Blankpage from './Blankpage';
 
 const root = createRoot(document.getElementById('root'));
 root.render(
@@ -10,7 +11,8 @@ root.render(
     <BrowserRouter>
       <Routes>
         <Route exact path='/' element={<Homepage/>}/>
-        <Route path='/:id' element={<Chatroom/>}/>
+        <Route exact path='/:id' element={<Chatroom/>}/>
+        <Route path='/:id/*' element={<Blankpage/>}/>
       </Routes>
     </BrowserRouter>
   </React.StrictMode>,
