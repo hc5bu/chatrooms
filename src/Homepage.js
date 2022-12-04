@@ -161,6 +161,7 @@ function Homepage() {
 
   return (
     <div style={{ textAlign: 'center' }}>
+      <div id="notSo">(not-so)</div>
       <h1 id="pageTitle">Basic Chatroom</h1>
       <h2>Enter a Room ID (up to 4 characters) to begin.</h2>
       <span id='roomSearch'>

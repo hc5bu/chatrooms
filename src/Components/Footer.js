@@ -102,15 +102,23 @@ function Footer(props) {
                         onKeyDown={enterPressMessage} /> :
                     <div id="uploadContent">
                         <input id='fileUpload' type='file' accept="text/plain,audio/*,image/*"  onChange={handleFileChange} value={fileValue} disabled={sending}/>
-                        <span id="fileTypes">Valid: .jpeg/.png/.mp3/.txt</span>
+                        <BrowserView>
+                            <span id="fileTypes">Valid: .jpeg/.png/.mp3/.txt</span>
+                        </BrowserView>
                     </div>
                     
                 }
-
-                <button id="sendButton" onClick={clickMessageEntry} disabled={disableSend} 
-                style={{ "fontSize": (sending ? "" : "20px"), "color":(disableSend ? "" : (showUpload ? "orangered" : "blue"))}}>
-                    {sending ? "Sending..." : "Send"}
-                </button>
+                {!showUpload ?
+                    <button id="sendButton" onClick={clickMessageEntry} disabled={disableSend} 
+                    style={{ "fontSize": (sending ? "" : "20px"), "color":(disableSend ? "" : "blue")}}>
+                        {sending ? "Sending..." : "Send"}
+                    </button> :
+                    <button id="uploadButton" onClick={clickMessageEntry} disabled={disableSend} 
+                    style={{ "fontSize": (sending ? "" : "20px"), "color":(disableSend ? "" : "orangeRed")}}>
+                        {sending ? "Uploading..." : "Upload"}
+                    </button>
+                }
+                
             </div>
         )
     }

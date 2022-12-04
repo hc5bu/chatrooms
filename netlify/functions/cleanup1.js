@@ -36,7 +36,7 @@ const handler = async function (event, context) {
     for (const id in data) {
         const numUsers = data[id]['users'] !== undefined ? Object.keys(data[id]['users']).length : 0;
         const lastUpdated = data[id]['lastUpdated'];
-        const now = Date.now()
+        const now = Date.now();
         if (lastUpdated !== undefined && (
             (numUsers === 0 && now - lastUpdated > 3600000) || now - lastUpdated > 86400000))
             deleteList.push(id);
@@ -55,6 +55,10 @@ const handler = async function (event, context) {
             update[id] = {};
             update[id]['lastUpdated'] = null;
             update[id]['messages'] = null;
+            const now = Date.now();
+            const lastUpdated = data[id]['lastUpdated'];
+            if(now - lastUpdated > 86400000)
+                update[id]['users'] = null;
 
             if(data[id]['files'] !== undefined){
                 for(const filepath of Object.values(data[id]['files']))
