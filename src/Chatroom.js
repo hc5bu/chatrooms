@@ -101,14 +101,6 @@ class Chatroom extends React.Component {
             this.loading();
         } else {
             this.unloading();
-            /*
-            this.setState({
-                usersUpdated: false,
-                messagesLoaded: false,
-                usersLoaded: false
-            })
-            I can't unload the page. That'll reset the state of all components.
-            Chances are no one will type that quickly*/
         }
     }
 

@@ -131,11 +131,9 @@ function Homepage() {
         </thead>
         <tbody>
           {ids.map((id, i) => {
-            console.log(id)
             const numUsers = allData[id]['users'] !== undefined ? Object.keys(allData[id]['users']).length : 0;
             const numMessages = allData[id]['messages'] !== undefined ? Object.keys(allData[id]['messages']).length : 0;
             const lastUpdated = allData[id]['lastUpdated'] !== undefined ? (new Date(allData[id]['lastUpdated'])).toLocaleString("en-US") : "N/A";
-            console.log(numUsers);
             return (
               <tr key={i}>
                 <td>{id}</td>

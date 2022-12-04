@@ -4,7 +4,6 @@ const { getStorage } = require("firebase-admin/storage");
 
 const handler = async function (event, context) {
     console.log("Received event:", event);
-    console.log("Private Key:\n", process.env.FIREBASE_ADMIN_KEY.replace(/\\n/g, '\n'));
     // First, set up firebase-admin
     const serviceAccount = {
         "type": "service_account",
