@@ -7,6 +7,9 @@ function Footer(props) {
     const [messageEntry, setMessageEntry] = useState("");
     const [sending, setSending] = useState(false);
     const [nameExists, setNameExists] = useState();
+    const [showUpload, setShowUpload] = useState(false);
+    const [file, setFile] = useState();
+    const [fileValue, setFileValue] = useState("");
 
     const clickUserEntry = async (e) => {
         const name = userEntry;
@@ -22,11 +25,19 @@ function Footer(props) {
     }
 
     const clickMessageEntry = async (e) => {
-        if (messageEntry !== "") {
+        if(showUpload && fileValue!==""){
+            setSending(true);
+            const result = await props.sendFile(file);
+            if(result===true){
+                setFile(undefined);
+                setFileValue("");
+                setSending(false);
+            }
+        }
+        else if (messageEntry !== "") {
             setSending(true);
             const result = await props.sendMessage(messageEntry);
             if (result === true) {
-                //success!
                 setMessageEntry("");
                 setSending(false);
             }
@@ -36,15 +47,24 @@ function Footer(props) {
     const enterPressUser = (e) => {
         if (e.key === "Enter") {
             e.preventDefault();
-            clickUserEntry();
+            if(!sending)
+                clickUserEntry();
         }
     }
     const enterPressMessage = (e) => {
         if (e.key === "Enter") {
             e.preventDefault();
-            clickMessageEntry();
+            if(!sending)
+                clickMessageEntry();
         }
     }
+
+    const handleFileChange = (e) => {
+        if (e.target.files) {
+            setFile(e.target.files[0]);
+            setFileValue(e.target.value);
+        }
+      };
 
     if (props.username === "") {
         return (
@@ -64,7 +84,7 @@ function Footer(props) {
                 <div className="footerContent">
                     <input id="usernameInput" value={userEntry} onChange={e => setUserEntry(e.target.value)} placeholder="Enter a username..."
                         onKeyDown={enterPressUser} disabled={sending} />
-                    <button id="enterButton" onClick={clickUserEntry} disabled={sending} style={{"fontSize":(sending?"":"20px")}}>
+                    <button id="enterButton" onClick={clickUserEntry} disabled={sending||userEntry.length===0} style={{ "fontSize": (sending ? "" : "20px") }}>
                         {sending ? "Entering..." : "Enter"}
                     </button>
                 </div>
@@ -72,13 +92,23 @@ function Footer(props) {
 
         )
     }
-
     else {
+        let disableSend = sending || (!showUpload && messageEntry.length===0) || (showUpload && file===undefined);
         return (
             <div className="footerContent" style={{ "width": "100%" }}>
-                <input id="messageInput" value={messageEntry} onChange={e => setMessageEntry(e.target.value)} placeholder={`Type your message, ${props.username}...`}
-                    onKeyDown={enterPressMessage} disabled={sending} />
-                <button id="sendButton" onClick={clickMessageEntry} disabled={sending} style={{"fontSize":(sending?"":"20px")}}>
+                <button id="changeButton" onClick={()=>setShowUpload(!showUpload)} disabled={sending}>{showUpload?"Go Back":"File Upload"}</button>
+                {!showUpload ?
+                    <input id="messageInput" value={messageEntry} onChange={e => setMessageEntry(e.target.value)} placeholder={`Type your message, ${props.username}...`}
+                        onKeyDown={enterPressMessage} /> :
+                    <div id="uploadContent">
+                        <input id='fileUpload' type='file' accept="text/plain,audio/*,image/*"  onChange={handleFileChange} value={fileValue} disabled={sending}/>
+                        <span id="fileTypes">Valid: .jpeg/.png/.mp3/.txt</span>
+                    </div>
+                    
+                }
+
+                <button id="sendButton" onClick={clickMessageEntry} disabled={disableSend} 
+                style={{ "fontSize": (sending ? "" : "20px"), "color":(disableSend ? "" : (showUpload ? "orangered" : "blue"))}}>
                     {sending ? "Sending..." : "Send"}
                 </button>
             </div>

@@ -3,6 +3,7 @@
     height:100%;
     text-align:center;
     display:flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 }
@@ -44,20 +45,24 @@
     align-items: flex-start;
 }
 
-.myMessage > .messageText {
+.myMessage > .messageMiddle {
     background-color: aquamarine;
+}
+
+.notMyMessage > .messageMiddle {
+    background-color: aqua;
+}
+
+.messageMiddle {
     padding: 10px;
     border-radius: 10px;
     margin-top: 3px;
     margin-bottom: 3px;
 }
 
-.notMyMessage > .messageText {
-    background-color: aqua;
-    padding: 10px;
-    border-radius: 10px;
-    margin-top: 3px;
-    margin-bottom: 3px;
+.messageImage {
+    max-width: 80w;
+    max-height: 40vh;
 }
 
 .username {

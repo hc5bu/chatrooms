@@ -1,12 +1,14 @@
 import React from "react";
 import { useParams, Link } from "react-router-dom";
-import { db } from "./firebase.js";
+import { db, storage } from "./firebase.js";
 import { ref, push, get, set, remove, onValue } from "firebase/database";
+import { ref as storeRef, uploadBytes, getDownloadURL } from "firebase/storage";
 import { isMobile } from "react-device-detect";
 import Chat from "./Components/Chat";
 import Footer from "./Components/Footer";
 import Header from "./Components/Header";
 import "./Styles/Chatroom.css";
+
 
 export default function ChatroomWrapper(props) {
     let { id } = useParams();
@@ -41,7 +43,7 @@ class Chatroom extends React.Component {
             this.userKey = push(this.userRef);
             this.loading();
             //and an event listener to do stuff when you leave the page.
-            if(isMobile)
+            if (isMobile)
                 document.addEventListener("visibilitychange", this.visibilityChange);
             else
                 window.addEventListener('beforeunload', this.unloading);
@@ -52,11 +54,11 @@ class Chatroom extends React.Component {
     resetUsername = async () => {
         // like setUsername below, but without parameters
         let userlist = (await get(this.userRef)).val();
-        userlist = userlist!==null ? Object.values(userlist) : [];
+        userlist = userlist !== null ? Object.values(userlist) : [];
         this.setState({ users: userlist });
-        if (this.state.username === "" || userlist.includes(this.state.username)){
+        if (this.state.username === "" || userlist.includes(this.state.username)) {
             await set(this.userKey, ""); // will be "" if name is taken
-            this.setState({username : ""});
+            this.setState({ username: "" });
         }
         else
             await set(this.userKey, this.state.username);
@@ -159,6 +161,32 @@ class Chatroom extends React.Component {
         return true;
     }
 
+    sendFile = async (file) => {
+        const messageKey = push(ref(db, `${this.props.id}/messages`));
+        const fileKey = push(ref(db, `${this.props.id}/files`))
+        const filepath = `${this.props.id}/${messageKey.key}/${file.name}`;
+        const storageRef = storeRef(storage, filepath);        
+        const newMessage = {
+            filetype: file.type,
+            filename: file.name,
+            timestamp: Date.now(),
+            username: this.state.username,
+        }
+        try {
+            await uploadBytes(storageRef, file);
+            const url = await getDownloadURL(storeRef(storage, filepath));
+            newMessage['fileUrl'] = url;
+            await set(messageKey, newMessage);
+            await set(fileKey, filepath);
+            await set(ref(db, `${this.props.id}/lastUpdated`), Date.now());
+        }
+        catch (error) {
+            this.setState({ error: error.message });
+            return false;
+        }
+        return true;
+    }
+
     render() {
         if (this.state.invalid) {
             return (
@@ -192,7 +220,7 @@ class Chatroom extends React.Component {
                         <Chat username={this.state.username} messages={this.state.messages} error={this.state.error} />
                     </div>
                     <div id="footer" style={{ "height": (this.state.username === "" ? 90 : 50) }}>
-                        <Footer username={this.state.username} setUsername={this.setUsername} sendMessage={this.sendMessage} />
+                        <Footer username={this.state.username} setUsername={this.setUsername} sendMessage={this.sendMessage} sendFile={this.sendFile}/>
                     </div>
                 </div>
             )

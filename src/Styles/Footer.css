@@ -35,5 +35,37 @@
 
 #enterButton, #sendButton {
     height: 100%;
-    width: 75px
+    width: 75px;
+}
+
+#changeButton {
+    height:100%;
+    width:55px;
+    text-align: center;
+    margin-right: 5px;
+}
+
+#fileTypes {
+    text-align: center;
+    font-size: 16px;
+    margin-right: 10px;
+    margin-left:5px;
+    font-weight:00;
+}
+
+#uploadContent {
+    flex-grow : 1;
+    margin-left: 0;
+    margin-right: 5px;
+    display: flex;
+    align-items: center;
+    background-color: rgb(170, 255, 255);
+    padding: 5px;
+}
+
+#fileUpload {
+    flex-grow:1;
+    font-size: 16px;
+    margin-right: 5px;
+    color: orangered;
 }
