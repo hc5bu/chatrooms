@@ -66,6 +66,7 @@
 
 #uploadContent {
     flex-grow : 1;
+    min-width: 100px;
     margin-left: 0;
     margin-right: 5px;
     display: flex;
