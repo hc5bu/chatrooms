@@ -4,13 +4,13 @@ const { getStorage } = require("firebase-admin/storage");
 
 const handler = async function (event, context) {
     console.log("Received event:", event);
-    console.log(process.env.FIREBASE_ADMIN_KEY);
-    // First, set up firebase-admin (this code is private)
+    console.log("Private Key:\n", process.env.FIREBASE_ADMIN_KEY.replace(/\\n/g, '\n'));
+    // First, set up firebase-admin
     const serviceAccount = {
         "type": "service_account",
         "project_id": "chatroom-2bf9b",
         "private_key_id": "e1e2dfb1cbd4996f3c053b4c41c783a69dfa4050",
-        "private_key": process.env.FIREBASE_ADMIN_KEY,
+        "private_key": process.env.FIREBASE_ADMIN_KEY.replace(/\\n/g, '\n'),
         "client_email": "firebase-adminsdk-21avi@chatroom-2bf9b.iam.gserviceaccount.com",
         "client_id": "118252749289075467241",
         "auth_uri": "https://accounts.google.com/o/oauth2/auth",
