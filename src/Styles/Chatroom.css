@@ -20,7 +20,7 @@
     right:0;
     top:51px;
     bottom:50px;
-    overflow: auto;
+    overflow-y: auto;
 }
 
 #footer{

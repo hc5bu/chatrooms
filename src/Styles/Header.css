@@ -18,12 +18,15 @@
     margin-left: 10px;
     flex-grow:1;
     text-align:left;
-    text-overflow: ellipsis
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 #roomIdText{
     margin-right:10px;
     font-weight:bold;
+    white-space: nowrap;
 }
 
 #roomNum {

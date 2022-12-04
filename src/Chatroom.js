@@ -9,7 +9,6 @@ import Footer from "./Components/Footer";
 import Header from "./Components/Header";
 import "./Styles/Chatroom.css";
 
-
 export default function ChatroomWrapper(props) {
     let { id } = useParams();
     return (<Chatroom id={id} />);
@@ -29,7 +28,6 @@ class Chatroom extends React.Component {
             username: "",
             users: [],
             messages: [],
-            //sending: false
         };
         this.userListener = undefined;
         this.messageListener = undefined;

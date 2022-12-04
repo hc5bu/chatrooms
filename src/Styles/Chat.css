@@ -46,11 +46,16 @@
 }
 
 .myMessage > .messageMiddle {
-    background-color: aquamarine;
+    background-color: aquamarine;  
 }
 
 .notMyMessage > .messageMiddle {
     background-color: aqua;
+}
+
+.myMessage > *, .notMyMessage > * {
+    max-width: 75vw;
+    overflow-wrap: break-word;
 }
 
 .messageMiddle {
